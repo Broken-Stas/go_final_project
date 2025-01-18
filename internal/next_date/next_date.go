@@ -1,4 +1,4 @@
-package handler
+package next_date
 
 import (
 	"errors"
@@ -9,9 +9,12 @@ import (
 	"time"
 )
 
+// Определение формата даты
+const DateFormat = "20060102"
+
 // Парсим данные
 func NextDate(now time.Time, date string, repeat string) (string, error) {
-	taskDate, err := time.Parse("20060102", date)
+	taskDate, err := time.Parse(DateFormat, date)
 	if err != nil {
 		return "", errors.New("incorrect date")
 	}
@@ -38,7 +41,7 @@ func NextDate(now time.Time, date string, repeat string) (string, error) {
 		for {
 			taskDate = taskDate.AddDate(0, 0, days)
 			if taskDate.After(now) {
-				return taskDate.Format("20060102"), nil
+				return taskDate.Format(DateFormat), nil
 			}
 		}
 
@@ -46,7 +49,7 @@ func NextDate(now time.Time, date string, repeat string) (string, error) {
 		for {
 			taskDate = taskDate.AddDate(1, 0, 0)
 			if taskDate.After(now) {
-				return taskDate.Format("20060102"), nil
+				return taskDate.Format(DateFormat), nil
 			}
 		}
 
@@ -63,9 +66,9 @@ func NextDateHandler(w http.ResponseWriter, r *http.Request) {
 	repeat := r.FormValue("repeat")
 
 	// Парсим параметр now
-	now, err := time.Parse("20060102", nowStr)
+	now, err := time.Parse(DateFormat, nowStr)
 	if err != nil {
-		http.Error(w, "invalid 'now' parameter", http.StatusBadRequest)
+		http.Error(w, "incorrect parameter `now` ", http.StatusBadRequest)
 		return
 	}
 

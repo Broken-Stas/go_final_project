@@ -21,7 +21,7 @@ func InitDB(dbFile string) (*sql.DB, error) {
 	}
 
 	if install {
-		log.Println("Создаём БД")
+		log.Println("Creating a database.")
 		createTableSQL := `
             CREATE TABLE scheduler (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -35,7 +35,7 @@ func InitDB(dbFile string) (*sql.DB, error) {
 		if _, err := db.Exec(createTableSQL); err != nil {
 			return nil, err
 		}
-		log.Println("Таблица scheduler создана.")
+		log.Println("The scheduler table has been created.")
 	}
 	return db, nil
 }
